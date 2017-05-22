@@ -62,3 +62,24 @@ function catsay() {
 	echo $''
 }
 export -f catsay
+
+function testwrite() {
+  local __file=$1
+  local __resultvar=$2
+  echo "Testing write access to $__file..."
+  bash -c "printf \"%s\" \"\" >> \"$__file\""
+  if [ $? -eq 0 ]; then
+    if [[ "$__resultvar" ]]; then
+      eval $__resultvar="0"
+    else
+      echo "Success: $__file file can be editted."
+    fi
+  else
+    if [[ "$__resultvar" ]]; then
+      eval $__resultvar="1"
+    else 
+      echo "Permission Denied. Run as admin and try again."
+    fi
+  fi
+}
+export -f testwrite
